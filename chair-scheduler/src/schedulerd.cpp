@@ -23,8 +23,8 @@ void *tfn(void *arg) {
     printf("chair %d is human %d\n", human_id, target_chair);
     //   pthread_mutex_unlock(&chair[human_id]);
     // }
-    pthread_mutex_unlock(&chair[target_chair]);
     sleep(rand() % 5);
+    pthread_mutex_unlock(&chair[target_chair]);
   }
 
   return NULL;
