@@ -36,8 +36,11 @@ int main()
     rocksdb::ReadOptions read_options;
     rocksdb::Iterator* it = db->NewIterator(read_options);
 
+    int max = -1;
+
     // 遍历键值对
     for (it->SeekToFirst(); it->Valid(); it->Next()) {
+        max = std::max(max, keyToInt(it->key().ToString()));
         std::cout << "Key: " << keyToInt(it->key().ToString()) << ", Value: " << it->value().ToString() << std::endl;
     }
 
@@ -46,7 +49,11 @@ int main()
     }
 
     // remove
-    db->Delete(rocksdb::WriteOptions(), intToKey(59));
+    db->Delete(rocksdb::WriteOptions(), intToKey(max));
+
+    // add
+    std::string value = "5a0c6b49882a9f981bad0848490275cee3a88c91d1b7e4a0c9ac06b1a7eb9d88";
+    db->Put(rocksdb::WriteOptions(), intToKey(max), value);
 
     delete it;
     delete db;
