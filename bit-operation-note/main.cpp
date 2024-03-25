@@ -70,6 +70,52 @@ void swap(int &a, int &b){
     a ^= b;
 }
 
+union ushort_char {
+    unsigned short n;
+    char c[2];
+};
+
+bool isShortHexSame(unsigned short num){
+    ushort_char u = {};
+    u.n = num;
+    if (u.c[0] != u.c[1]){
+        return false;
+    }
+    char highByte = u.c[0] >> 4;
+    char lowByte = u.c[0] & 0x0f;
+    return highByte == lowByte;
+}
+
+int getHeightBitCount(int num){
+    int count = 0;
+    while (num != 0){
+        num = num >> 1;
+        ++count;
+    }
+    return count;
+}
+
+// 最大公因數
+int gcd(int a, int b){
+    if (a == 0){
+        return b;
+    }
+    if (b == 0){
+        return a;
+    }
+    return (a >= b) ? gcd(a - b, b) : gcd(a, b - a);
+}
+
+void reverseString(char *str){
+    int len = strlen(str);
+    int mid = len / 2;
+    for (int i=0; i< mid; i++){
+        char tmp = str[i];
+        str[i] = str[len-i-1];
+        str[len-i-1] = tmp;
+    }
+}
+
 int main() {
     int num = 17;
     int num2 = 22;
@@ -129,6 +175,16 @@ int main() {
     linkList->printList();
     linkList->reverseList();
     linkList->printList();
+
+    // 考古題
+    std::cout << "考古題" << std::endl;
+    std::cout << "is short hex same: " << isShortHexSame(0x1234) << std::endl;
+    std::cout << "is short hex same: " << isShortHexSame(0x2222) << std::endl;
+    std::cout << "gcd: " << gcd(12, 18) << std::endl;
+
+    char str[] = "hello";
+    reverseString(str);
+    std::cout << str << std::endl;
 
     return 0;
 }
